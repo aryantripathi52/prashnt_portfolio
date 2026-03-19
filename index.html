@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TANISH FX — GFX Store</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --gold: #f5a623;
+      --gold-dim: #c47d0e;
+      --bg: #0e0e0e;
+      --bg2: #141414;
+      --white: #f0ede8;
+      --muted: #555;
+      --border: rgba(255, 255, 255, 0.07);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* CURSOR */
+    .cursor {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.3s, height 0.3s, background 0.3s, border 0.3s;
+    }
+
+    .cursor-ring {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(245, 166, 35, 0.35);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+    }
+
+    /* GRAIN */
+    .grain {
+      position: fixed;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 9990;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grain 0.4s steps(1) infinite;
+    }
+
+    @keyframes grain {
+
+      0%,
+      100% {
+        transform: translate(0, 0)
+      }
+
+      10% {
+        transform: translate(-2%, -2%)
+      }
+
+      20% {
+        transform: translate(2%, 2%)
+      }
+
+      30% {
+        transform: translate(-1%, 1%)
+      }
+
+      40% {
+        transform: translate(1%, -1%)
+      }
+
+      50% {
+        transform: translate(-2%, 2%)
+      }
+
+      60% {
+        transform: translate(2%, -2%)
+      }
+
+      70% {
+        transform: translate(-1%, -1%)
+      }
+
+      80% {
+        transform: translate(1%, 1%)
+      }
+
+      90% {
+        transform: translate(-2%, 1%)
+      }
+    }
+
+    /* PROGRESS */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+      z-index: 9997;
+      width: 0%;
+      box-shadow: 0 0 10px rgba(245, 166, 35, 0.4);
+      transition: width 0.08s linear;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 0 56px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
+      border-bottom: 1px solid transparent;
+    }
+
+    nav.scrolled {
+      background: rgba(14, 14, 14, 0.88);
+      backdrop-filter: blur(24px);
+      border-bottom-color: var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.5s, transform 0.5s;
+      filter: drop-shadow(0 0 10px rgba(245, 166, 35, 0.3));
+    }
+
+    nav.scrolled .nav-logo {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.5s 0.1s, transform 0.5s 0.1s;
+    }
+
+    nav.scrolled .nav-links {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(240, 237, 232, 0.5);
+      text-decoration: none;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      height: 500vh;
+    }
+
+    .sticky-hero {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #scrollCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .canvas-vignette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(ellipse at center, transparent 25%, rgba(14, 14, 14, 0.65) 100%);
+    }
+
+    /* TEXT OVERLAYS */
+    .overlay-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .txt {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0 72px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      pointer-events: none;
+    }
+
+    .txt.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .txt.exit {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+
+    #t1 {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 16px;
+    }
+
+    #t2 {
+      align-items: flex-start;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    #t3 {
+      align-items: flex-end;
+      justify-content: center;
+      text-align: right;
+      gap: 24px;
+    }
+
+    .hero-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(80px, 15vw, 190px);
+      letter-spacing: 8px;
+      line-height: 0.88;
+      background: linear-gradient(135deg, #fff 0%, #f5a623 45%, #fff 100%);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 5s ease infinite;
+      filter: drop-shadow(0 0 60px rgba(245, 166, 35, 0.15));
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 0% 50%
+      }
+
+      50% {
+        background-position: 100% 50%
+      }
+
+      100% {
+        background-position: 0% 50%
+      }
+    }
+
+    .hero-sub {
+      font-size: clamp(12px, 1.5vw, 16px);
+      font-weight: 300;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(240, 237, 232, 0.4);
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(240, 237, 232, 0.25);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 56px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: lineAnim 2s ease-in-out infinite;
+    }
+
+    @keyframes lineAnim {
+      0% {
+        transform: scaleY(0);
+        transform-origin: top
+      }
+
+      45% {
+        transform: scaleY(1);
+        transform-origin: top
+      }
+
+      55% {
+        transform: scaleY(1);
+        transform-origin: bottom
+      }
+
+      100% {
+        transform: scaleY(0);
+        transform-origin: bottom
+      }
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .sec-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(44px, 7vw, 96px);
+      line-height: 1.0;
+      color: var(--white);
+    }
+
+    .sec-heading em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .sec-body {
+      font-size: clamp(15px, 1.8vw, 20px);
+      font-weight: 300;
+      color: rgba(240, 237, 232, 0.45);
+      max-width: 420px;
+      line-height: 1.75;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(245, 166, 35, 0.07);
+      border: 1px solid rgba(245, 166, 35, 0.2);
+      padding: 10px 22px;
+      font-size: 14px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .clink {
+      font-size: clamp(18px, 3vw, 38px);
+      font-weight: 300;
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: color 0.3s, gap 0.3s;
+      pointer-events: auto;
+    }
+
+    .clink:hover {
+      color: var(--gold);
+      gap: 22px;
+    }
+
+    .clink .arr {
+      font-size: 0.55em;
+      opacity: 0.4;
+    }
+
+    /* COUNTER DOTS */
+    .dots {
+      position: fixed;
+      right: 36px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--muted);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .dot.active {
+      background: var(--gold);
+      transform: scale(1.8);
+      box-shadow: 0 0 8px rgba(245, 166, 35, 0.5);
+    }
+
+    /* SERVICES */
+    #services {
+      background: var(--bg);
+      padding: 140px 64px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .sec-intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 72px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 40px;
+    }
+
+    .sec-intro h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(40px, 5.5vw, 72px);
+      line-height: 1.05;
+    }
+
+    .sec-intro p {
+      font-size: 15px;
+      color: rgba(240, 237, 232, 0.35);
+      max-width: 260px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .svc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .svc {
+      background: var(--bg);
+      padding: 40px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+      cursor: default;
+    }
+
+    .svc::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(245, 166, 35, 0.05), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .svc:hover {
+      background: #161616;
+    }
+
+    .svc:hover::before {
+      opacity: 1;
+    }
+
+    .svc-n {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      color: rgba(245, 166, 35, 0.07);
+      line-height: 1;
+      margin-bottom: 20px;
+      transition: color 0.4s;
+    }
+
+    .svc:hover .svc-n {
+      color: rgba(245, 166, 35, 0.18);
+    }
+
+    .svc-cat {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .svc-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--white);
+      line-height: 1.3;
+    }
+
+    .svc-arr {
+      position: absolute;
+      bottom: 28px;
+      right: 28px;
+      font-size: 18px;
+      color: var(--muted);
+      opacity: 0;
+      transform: translate(-8px, 8px);
+      transition: all 0.3s;
+    }
+
+    .svc:hover .svc-arr {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    /* SAMPLE WORK */
+    #sample-work {
+      background: var(--bg2);
+      padding: 140px 64px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .work-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+    }
+
+    .work-hdr h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(40px, 5.5vw, 72px);
+      line-height: 1.05;
+    }
+
+    .drive-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border: 1px solid rgba(245, 166, 35, 0.3);
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.35s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .drive-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: translateX(-101%);
+      transition: transform 0.4s ease;
+      z-index: 0;
+    }
+
+    .drive-btn:hover {
+      color: #000;
+      border-color: var(--gold);
+    }
+
+    .drive-btn:hover::before {
+      transform: translateX(0);
+    }
+
+    .drive-btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .wi {
+      position: relative;
+      overflow: hidden;
+      background: #1c1c1c;
+      cursor: pointer;
+      aspect-ratio: 4/3;
+    }
+
+    .wi:nth-child(1) {
+      grid-column: 1/3;
+      aspect-ratio: 16/9;
+    }
+
+    .wi:nth-child(5) {
+      grid-column: 2/4;
+      aspect-ratio: 16/9;
+    }
+
+    .wi-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #1c1c1c, #222);
+      transition: transform 0.6s ease;
+    }
+
+    .wi:hover .wi-inner {
+      transform: scale(1.06);
+    }
+
+    /* IMAGE DISPLAY - when real images are used */
+    .wi img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .wi:hover img {
+      transform: scale(1.06);
+    }
+
+    .wi-icon {
+      font-size: 28px;
+      opacity: 0.15;
+    }
+
+    .wi-hint {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(240, 237, 232, 0.15);
+    }
+
+    .wi-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14, 14, 14, 0.92) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex;
+      align-items: flex-end;
+      padding: 22px;
+    }
+
+    .wi:hover .wi-overlay {
+      opacity: 1;
+    }
+
+    .wi-tag {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .wi-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    /* LIGHTBOX */
+    .lb {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 8, 8, 0.96);
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+      backdrop-filter: blur(16px);
+    }
+
+    .lb.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 28px;
+      right: 36px;
+      font-size: 24px;
+      color: rgba(240, 237, 232, 0.4);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.3s;
+    }
+
+    .lb-close:hover {
+      color: var(--white);
+    }
+
+    .lb-body {
+      border: 1px solid var(--border);
+      padding: 80px 100px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: rgba(240, 237, 232, 0.25);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* CONTACT */
+    #contact {
+      background: var(--bg);
+      padding: 140px 64px;
+      position: relative;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    #contact::before {
+      content: 'TFX';
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42vw;
+      color: rgba(245, 166, 35, 0.018);
+      bottom: -12%;
+      right: -4%;
+      line-height: 1;
+      pointer-events: none;
+      letter-spacing: -8px;
+    }
+
+    .ct-inner {
+      max-width: 880px;
+    }
+
+    .ct-tag {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: block;
+      font-weight: 500;
+    }
+
+    .ct-head {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(52px, 9vw, 120px);
+      line-height: 0.92;
+      margin-bottom: 72px;
+    }
+
+    .ct-head em {
+      font-style: italic;
+      color: var(--gold);
+      display: block;
+    }
+
+    .ct-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--border);
+      margin-bottom: 64px;
+    }
+
+    .ct-card {
+      background: var(--bg);
+      padding: 40px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ct-card::after {
+      content: '↗';
+      position: absolute;
+      top: 28px;
+      right: 28px;
+      font-size: 18px;
+      color: var(--muted);
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .ct-card:hover {
+      background: #161616;
+    }
+
+    .ct-card:hover::after {
+      color: var(--gold);
+      transform: translate(4px, -4px);
+    }
+
+    .ct-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .ct-val {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(20px, 2.5vw, 34px);
+      color: var(--white);
+    }
+
+    .ct-sub {
+      font-size: 13px;
+      color: rgba(240, 237, 232, 0.25);
+      font-weight: 300;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .price-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(64px, 11vw, 130px);
+      color: var(--gold);
+      line-height: 1;
+      letter-spacing: 2px;
+      filter: drop-shadow(0 0 30px rgba(245, 166, 35, 0.18));
+    }
+
+    .price-txt {
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(240, 237, 232, 0.35);
+      max-width: 300px;
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+      position: relative;
+      z-index: 10;
+    }
+
+    .ft-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+
+    .ft-copy {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+    @media(max-width:768px) {
+      nav {
+        padding: 0 24px;
+      }
+
+      .txt {
+        padding: 0 28px;
+      }
+
+      #services,
+      #sample-work,
+      #contact {
+        padding: 80px 24px;
+      }
+
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .svc-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .work-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .wi:nth-child(1),
+      .wi:nth-child(5) {
+        grid-column: auto;
+        aspect-ratio: 4/3;
+      }
+
+      .ct-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .sec-intro {
+        flex-direction: column;
+        gap: 24px;
+        align-items: flex-start;
+      }
+
+      .work-hdr {
+        flex-direction: column;
+        gap: 24px;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .dots {
+        display: none;
+      }
+
+      .price-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="grain"></div>
+  <div class="cursor" id="cur"></div>
+  <div class="cursor-ring" id="curR"></div>
+  <div class="scroll-progress" id="prog"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">TANISH FX</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#sample-work">Sample Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- DOTS -->
+  <div class="dots">
+    <div class="dot active" data-s="0"></div>
+    <div class="dot" data-s="1"></div>
+    <div class="dot" data-s="2"></div>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="sticky-hero">
+      <canvas id="scrollCanvas"></canvas>
+      <div class="canvas-vignette"></div>
+
+      <div class="overlay-wrap">
+        <!-- Section 1: Center Brand -->
+        <div class="txt active" id="t1">
+          <div class="hero-brand">TANISH FX</div>
+          <div class="hero-sub">GFX Store &nbsp;·&nbsp; Premium Quality &nbsp;·&nbsp; Affordable Prices</div>
+          <div class="scroll-cue">
+            <div class="scroll-line"></div>
+            Scroll
+          </div>
+        </div>
+
+        <!-- Section 2: Left — Artist -->
+        <div class="txt" id="t2">
+          <span class="tag">⚡ Trusted GFX Artist</span>
+          <h2 class="sec-heading">Affordable.<br><em>Premium.</em><br>Delivered.</h2>
+          <p class="sec-body">High-end graphics for gamers, esports teams & creators. Every design crafted with
+            precision and speed.</p>
+          <div class="pill">Starting at just ₹100 &nbsp;→</div>
+        </div>
+
+        <!-- Section 3: Right — CTA -->
+        <div class="txt" id="t3">
+          <h2 class="sec-heading">Let's <em>Create</em><br>Together.</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-end;">
+            <a href="https://wa.me/918707512090" target="_blank" class="clink">WhatsApp: 87075 12090 <span
+                class="arr">↗</span></a>
+            <a href="https://instagram.com/tanixh_fx" target="_blank" class="clink">@tanixh_fx <span
+                class="arr">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="sec-intro reveal">
+      <h2>Everything<br><em style="font-style:italic;color:var(--gold)">You Need.</em></h2>
+      <p>From gaming overlays to professional branding — graphics that make your brand unforgettable.</p>
+    </div>
+    <div class="svc-grid reveal">
+      <div class="svc">
+        <div class="svc-n">01</div>
+        <div class="svc-cat">Branding</div>
+        <div class="svc-title">Logo Design</div>
+        <div class="svc-arr">↗</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">02</div>
+        <div class="svc-cat">Social Media</div>
+        <div class="svc-title">Banner & Poster</div>
+        <div class="svc-arr">↗</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">03</div>
+        <div class="svc-cat">Content Creation</div>
+        <div class="svc-title">YouTube Thumbnail</div>
+        <div class="svc-arr">↗</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">04</div>
+        <div class="svc-cat">Esports</div>
+        <div class="svc-title">Player / Profile Card</div>
+        <div class="svc-arr">↗</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">05</div>
+        <div class="svc-cat">Tournament</div>
+        <div class="svc-title">Statics & Points Table</div>
+        <div class="svc-arr">↗</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">06</div>
+        <div class="svc-cat">Print / Digital</div>
+        <div class="svc-title">Certificate & Flyers</div>
+        <div class="svc-arr">↗</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">07</div>
+        <div class="svc-cat">Apparel</div>
+        <div class="svc-title">Jersey Design</div>
+        <div class="svc-arr">↗</div>
+      </div>
+      <div class="svc">
+        <div class="svc-n">08</div>
+        <div class="svc-cat">Utility</div>
+        <div class="svc-title">Payment QR & ESP Checks</div>
+        <div class="svc-arr">↗</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAMPLE WORK -->
+  <section id="sample-work">
+    <div class="work-hdr reveal">
+      <h2>Sample<br><em style="font-style:italic;color:var(--gold)">Work.</em></h2>
+      <a href="https://drive.google.com/drive/folders/18mxxiaoxVTrpNSRW19tlLqetMsXrjhET" target="_blank"
+        class="drive-btn">
+        <span>View Full Portfolio on Drive ↗</span>
+      </a>
+    </div>
+
+    <div class="work-grid reveal">
+      <!-- Replace wi-inner with <img src="your-image.jpg" alt=""> to show real images -->
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">🦁</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Logo</span>
+            <div class="wi-label">Brand Identity</div>
+          </div>
+        </div>
+      </div>
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">🏆</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Esports</span>
+            <div class="wi-label">Player Card</div>
+          </div>
+        </div>
+      </div>
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">🚩</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Social</span>
+            <div class="wi-label">Banner Design</div>
+          </div>
+        </div>
+      </div>
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">👕</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Apparel</span>
+            <div class="wi-label">Jersey Design</div>
+          </div>
+        </div>
+      </div>
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">📊</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Tournament</span>
+            <div class="wi-label">Points Table</div>
+          </div>
+        </div>
+      </div>
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">🖼️</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Content</span>
+            <div class="wi-label">Thumbnail</div>
+          </div>
+        </div>
+      </div>
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">🏅</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Print</span>
+            <div class="wi-label">Certificate</div>
+          </div>
+        </div>
+      </div>
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">✉️</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Digital</span>
+            <div class="wi-label">Flyer Design</div>
+          </div>
+        </div>
+      </div>
+      <div class="wi" onclick="openLb()">
+        <div class="wi-inner">
+          <div class="wi-icon">📢</div>
+          <div class="wi-hint">Add Image</div>
+        </div>
+        <div class="wi-overlay">
+          <div><span class="wi-tag">Events</span>
+            <div class="wi-label">Poster Design</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="ct-inner">
+      <span class="ct-tag reveal">— Get in Touch</span>
+      <h2 class="ct-head reveal">Let's<em>Create.</em></h2>
+      <div class="ct-cards reveal">
+        <a href="https://wa.me/918707512090" target="_blank" class="ct-card">
+          <span class="ct-label">WhatsApp</span>
+          <span class="ct-val">87075 12090</span>
+          <span class="ct-sub">Fastest response · DM anytime</span>
+        </a>
+        <a href="https://instagram.com/tanixh_fx" target="_blank" class="ct-card">
+          <span class="ct-label">Instagram</span>
+          <span class="ct-val">@tanixh_fx</span>
+          <span class="ct-sub">See latest work · Follow for updates</span>
+        </a>
+      </div>
+      <div class="price-row reveal">
+        <div class="price-big">₹100</div>
+        <div class="price-txt">Starting price for premium GFX work. Logos, banners, jerseys, thumbnails and more —
+          affordable rates with fastest delivery.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ft-logo">TANISH FX</div>
+    <div class="ft-copy">© 2025 TANISH FX GFX Store · All rights reserved</div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lb" id="lb">
+    <button class="lb-close" onclick="closeLb()">✕</button>
+    <div class="lb-body">Replace placeholder<br>with your actual project image</div>
+  </div>
+
+  <script>
+    // ── CURSOR ──
+    const cur = document.getElementById('cur');
+    const curR = document.getElementById('curR');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+    (function loop() { rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11; curR.style.left = rx + 'px'; curR.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,button,.wi,.svc').forEach(el => {
+      el.addEventListener('mouseenter', () => { cur.style.transform = 'translate(-50%,-50%) scale(2.5)'; cur.style.background = 'transparent'; cur.style.border = '1px solid var(--gold)'; });
+      el.addEventListener('mouseleave', () => { cur.style.transform = 'translate(-50%,-50%) scale(1)'; cur.style.background = 'var(--gold)'; cur.style.border = 'none'; });
+    });
+
+    // ── CANVAS FRAME SCRUB ──
+    const canvas = document.getElementById('scrollCanvas');
+    const ctx = canvas.getContext('2d');
+    const FC = 56;
+    const frames = [];
+    let loaded = 0;
+
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+
+    function drawImg(img) {
+      const w = canvas.width, h = canvas.height;
+      const s = Math.max(w / img.width, h / img.height);
+      const x = (w - img.width * s) / 2, y = (h - img.height * s) / 2;
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(img, x, y, img.width * s, img.height * s);
+    }
+
+    function fallback(p) {
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      const hue = 18 + p * 15;
+      const g = ctx.createRadialGradient(w / 2, h * .4, 0, w / 2, h * .4, Math.max(w, h) * .9);
+      g.addColorStop(0, `hsla(${hue},55%,9%,1)`);
+      g.addColorStop(0.6, `hsla(${hue - 8},35%,5%,1)`);
+      g.addColorStop(1, `hsl(0,0%,4%)`);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    }
+
+    for (let i = 0; i < FC; i++) {
+      const img = new Image();
+      const idx = i.toString().padStart(2, '0');
+      img.src = `sequence/frame_${idx}_delay-0.066s.png`;
+      img.onload = () => { loaded++; if (i === 0) drawImg(img); };
+      img.onerror = () => loaded++;
+      frames.push(img);
+    }
+    fallback(0);
+
+    // ── SCROLL ──
+    const hero = document.getElementById('hero');
+    const t1 = document.getElementById('t1');
+    const t2 = document.getElementById('t2');
+    const t3 = document.getElementById('t3');
+    const nav = document.getElementById('nav');
+    const prog = document.getElementById('prog');
+    const allDots = document.querySelectorAll('.dot');
+    const textSections = [t1, t2, t3];
+
+    function setActive(idx) {
+      textSections.forEach((s, i) => {
+        s.classList.remove('active', 'exit');
+        if (i < idx) s.classList.add('exit');
+        else if (i === idx) s.classList.add('active');
+      });
+      allDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+
+    window.addEventListener('scroll', () => {
+      const sy = window.scrollY;
+      const heroH = hero.offsetHeight - window.innerHeight;
+      const hp = Math.min(1, Math.max(0, sy / heroH));
+
+      // Page progress bar
+      const pp = sy / (document.body.scrollHeight - window.innerHeight);
+      prog.style.width = (pp * 100) + '%';
+
+      // Navbar
+      nav.classList.toggle('scrolled', sy > window.innerHeight * .12);
+
+      // Canvas frame
+      const fi = Math.min(FC - 1, Math.floor(hp * FC));
+      if (frames[fi]?.complete && frames[fi].naturalWidth > 0) requestAnimationFrame(() => drawImg(frames[fi]));
+      else fallback(hp);
+
+      // Text sections
+      if (hp < 0.28) setActive(0);
+      else if (hp < 0.63) setActive(1);
+      else setActive(2);
+    }, { passive: true });
+
+    // Dot click navigation
+    allDots.forEach(d => {
+      d.addEventListener('click', () => {
+        const s = parseInt(d.dataset.s);
+        const targets = [0, 0.33, 0.66];
+        const heroH = hero.offsetHeight - window.innerHeight;
+        window.scrollTo({ top: targets[s] * heroH, behavior: 'smooth' });
+      });
+    });
+
+    // ── REVEAL ON SCROLL ──
+    const revEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    revEls.forEach(el => ro.observe(el));
+
+    // ── LIGHTBOX ──
+    function openLb() { document.getElementById('lb').classList.add('open'); }
+    function closeLb() { document.getElementById('lb').classList.remove('open'); }
+    document.getElementById('lb').addEventListener('click', function (e) { if (e.target === this) closeLb(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+  </script>
+</body>
+
+</html>
