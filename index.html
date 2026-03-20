@@ -586,6 +586,25 @@
       padding: 140px 64px;
       position: relative;
       z-index: 10;
+      overflow: hidden;
+    }
+
+    #sample-work::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.05) 0%, transparent 70%);
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #sample-work>* {
+      position: relative;
+      z-index: 1;
     }
 
     .work-hdr {
@@ -645,7 +664,8 @@
     .work-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      grid-template-rows: auto;
+      gap: 12px;
     }
 
     .wi {
@@ -653,41 +673,28 @@
       overflow: hidden;
       background: #1c1c1c;
       cursor: pointer;
-      aspect-ratio: 4/3;
+      aspect-ratio: 1/1;
+      border-radius: 4px;
+      transition: box-shadow 0.4s ease;
+      min-height: 0;
     }
 
-    .wi:nth-child(1) {
-      grid-column: 1/3;
-      aspect-ratio: 16/9;
+    /* Simple 3x2 grid — all equal squares */
+    .wi {
+      aspect-ratio: 1/1;
     }
 
-    .wi:nth-child(5) {
-      grid-column: 2/4;
-      aspect-ratio: 16/9;
+    .wi:hover {
+      box-shadow: 0 0 30px rgba(245, 166, 35, 0.25), 0 0 60px rgba(245, 166, 35, 0.1);
+      z-index: 2;
     }
 
-    .wi-inner {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #1c1c1c, #222);
-      transition: transform 0.6s ease;
-    }
-
-    .wi:hover .wi-inner {
-      transform: scale(1.06);
-    }
-
-    /* IMAGE DISPLAY - when real images are used */
     .wi img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.6s ease;
+      display: block;
     }
 
     .wi:hover img {
@@ -985,8 +992,7 @@
         grid-template-columns: 1fr 1fr;
       }
 
-      .wi:nth-child(1),
-      .wi:nth-child(5) {
+      .wi:nth-child(1) {
         grid-column: auto;
         aspect-ratio: 4/3;
       }
@@ -1033,7 +1039,11 @@
 
   <!-- NAV -->
   <nav id="nav">
-    <a href="#" class="nav-logo">TANISH FX</a>
+    <a href="#" class="nav-logo" style="display:flex;align-items:center;gap:10px;">
+      <img src="prashant sample/logo.jpeg" alt="TFX" onerror="this.style.display='none'"
+        style="width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(245,166,35,0.6));">
+      TANISH FX
+    </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
       <li><a href="#sample-work">Sample Work</a></li>
@@ -1151,90 +1161,30 @@
     </div>
 
     <div class="work-grid reveal">
-      <!-- Replace wi-inner with <img src="your-image.jpg" alt=""> to show real images -->
-      <div class="wi" onclick="openLb()">
-        <img src="prashant sample/sample 1.jpg" alt="Sample 1">
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Logo</span>
-            <div class="wi-label">Brand Identity</div>
-          </div>
-        </div>
+      <div class="wi" onclick="openLb('prashant sample/sample 1.jpg')">
+        <img src="prashant sample/sample 1.jpg" alt="Paid Scrims Poster">
+        <div class="wi-overlay"></div>
       </div>
-      <div class="wi" onclick="openLb()">
-        <img src="prashant sample/sample 2.jpg" alt="Sample 2">
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Esports</span>
-            <div class="wi-label">Player Card</div>
-          </div>
-        </div>
+      <div class="wi" onclick="openLb('prashant sample/sample 2.jpg')">
+        <img src="prashant sample/sample 2.jpg" alt="Overall Standings">
+        <div class="wi-overlay"></div>
       </div>
-      <div class="wi" onclick="openLb()">
-        <img src="prashant sample/sample 3.jpg" alt="Sample 3">
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Social</span>
-            <div class="wi-label">Banner Design</div>
-          </div>
-        </div>
+      <div class="wi" onclick="openLb('prashant sample/sample 3.jpg')">
+        <img src="prashant sample/sample 3.jpg" alt="Player Banner">
+        <div class="wi-overlay"></div>
       </div>
-      <div class="wi" onclick="openLb()">
-        <img src="prashant sample/sample 4.jpg" alt="Sample 4">
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Apparel</span>
-            <div class="wi-label">Jersey Design</div>
-          </div>
-        </div>
+      <div class="wi" onclick="openLb('prashant sample/sample 4.jpg')">
+        <img src="prashant sample/sample 4.jpg" alt="Logo Design">
+        <div class="wi-overlay"></div>
       </div>
-      <div class="wi" onclick="openLb()">
-        <img src="prashant sample/sample 5.jpg" alt="Sample 5">
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Tournament</span>
-            <div class="wi-label">Points Table</div>
-          </div>
-        </div>
+
+      <div class="wi" onclick="openLb('prashant sample/sample 7.jpg')">
+        <img src="prashant sample/sample 7.jpg" alt="Mafia Esports Logo">
+        <div class="wi-overlay"></div>
       </div>
-      <div class="wi" onclick="openLb()">
-        <div class="wi-inner">
-          <div class="wi-icon">🖼️</div>
-          <div class="wi-hint">Add Image</div>
-        </div>
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Content</span>
-            <div class="wi-label">Thumbnail</div>
-          </div>
-        </div>
-      </div>
-      <div class="wi" onclick="openLb()">
-        <div class="wi-inner">
-          <div class="wi-icon">🏅</div>
-          <div class="wi-hint">Add Image</div>
-        </div>
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Print</span>
-            <div class="wi-label">Certificate</div>
-          </div>
-        </div>
-      </div>
-      <div class="wi" onclick="openLb()">
-        <div class="wi-inner">
-          <div class="wi-icon">✉️</div>
-          <div class="wi-hint">Add Image</div>
-        </div>
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Digital</span>
-            <div class="wi-label">Flyer Design</div>
-          </div>
-        </div>
-      </div>
-      <div class="wi" onclick="openLb()">
-        <div class="wi-inner">
-          <div class="wi-icon">📢</div>
-          <div class="wi-hint">Add Image</div>
-        </div>
-        <div class="wi-overlay">
-          <div><span class="wi-tag">Events</span>
-            <div class="wi-label">Poster Design</div>
-          </div>
-        </div>
+      <div class="wi" onclick="openLb('prashant sample/sample 5.jpg')">
+        <img src="prashant sample/sample 5.jpg" alt="Maps Rotation">
+        <div class="wi-overlay"></div>
       </div>
     </div>
   </section>
@@ -1245,9 +1195,9 @@
       <span class="ct-tag reveal">— Get in Touch</span>
       <h2 class="ct-head reveal">Let's<em>Create.</em></h2>
       <div class="ct-cards reveal">
-        <a href="https://wa.me/918707512090" target="_blank" class="ct-card">
+        <a href="https://wa.me/918009496767" target="_blank" class="ct-card">
           <span class="ct-label">WhatsApp</span>
-          <span class="ct-val">87075 12090</span>
+          <span class="ct-val">+91 8009496767</span>
           <span class="ct-sub">Fastest response · DM anytime</span>
         </a>
         <a href="https://instagram.com/tanixh_fx" target="_blank" class="ct-card">
@@ -1273,7 +1223,7 @@
   <!-- LIGHTBOX -->
   <div class="lb" id="lb">
     <button class="lb-close" onclick="closeLb()">✕</button>
-    <div class="lb-body">Replace placeholder<br>with your actual project image</div>
+    <div class="lb-body" id="lb-body"></div>
   </div>
 
   <script>
@@ -1387,10 +1337,33 @@
     revEls.forEach(el => ro.observe(el));
 
     // ── LIGHTBOX ──
-    function openLb() { document.getElementById('lb').classList.add('open'); }
-    function closeLb() { document.getElementById('lb').classList.remove('open'); }
+    function openLb(src) {
+      const lbBody = document.getElementById('lb-body');
+      if (src) {
+        lbBody.innerHTML = '<img src="' + src + '" style="max-width:88vw;max-height:88vh;object-fit:contain;display:block;border:1px solid rgba(245,166,35,0.15);">';
+      }
+      document.getElementById('lb').classList.add('open');
+    }
+    function closeLb() {
+      document.getElementById('lb').classList.remove('open');
+      document.getElementById('lb-body').innerHTML = '';
+    }
     document.getElementById('lb').addEventListener('click', function (e) { if (e.target === this) closeLb(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+    // ── DISABLE RIGHT CLICK + INSPECT SHORTCUTS ──
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'K'].includes(e.key.toUpperCase())) ||
+        (e.ctrlKey && e.key.toLowerCase() === 'u') ||
+        (e.ctrlKey && e.key.toLowerCase() === 's')
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    });
   </script>
 </body>
 
