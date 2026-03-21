@@ -943,6 +943,30 @@
       opacity: 0.5;
     }
 
+    .ft-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ft-creator {
+      font-size: 10px;
+      color: rgba(240, 237, 232, 0.4);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .ft-creator a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.3s;
+    }
+
+    .ft-creator a:hover {
+      opacity: 0.8;
+    }
+
     .ft-copy {
       font-size: 12px;
       color: var(--muted);
@@ -980,8 +1004,13 @@
       footer {
         padding: 24px;
         flex-direction: column;
-        gap: 12px;
+        gap: 20px;
         text-align: center;
+        align-items: center;
+      }
+
+      .ft-brand {
+        align-items: center;
       }
 
       .svc-grid {
@@ -1216,7 +1245,12 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="ft-logo">TANISH FX</div>
+    <div class="ft-brand">
+      <div class="ft-logo">TANISH FX</div>
+      <div class="ft-creator">
+        Created by <a href="https://www.instagram.com/4ryan.web?igsh=ZXNrNjdqa3lxZjhp" target="_blank">@4ryan.web</a>
+      </div>
+    </div>
     <div class="ft-copy">© 2025 TANISH FX GFX Store · All rights reserved</div>
   </footer>
 
